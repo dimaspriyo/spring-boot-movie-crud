@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Title</title>
+<title>Spring Boot Movie CRUD</title>
 
 <link rel="stylesheet" type="text/css"
 	href="bootstrap/css/bootstrap.css">
@@ -27,7 +27,7 @@ body .container {
 	crossorigin="anonymous"></script>
 <script type="text/javascript"
 	src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
-<script src="BOOTSTRAP/js/bootstrap.js" type="text/javascript"></script>
+<script src="bootstrap/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#example').DataTable();
@@ -46,54 +46,73 @@ body .container {
 
 		<div class="row justify-content-center">
 
-			<form class="form-horizontal w-50" action="/addmovie">
+			<form class="form-horizontal w-50" method="post"
+			th:action="@{/insert}"
+				th:object="${movie}"
+				>
 
-				<div class="form-group row">
-					<label class="col-sm-3 form-label"> Movie Name </label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" name="name">
-					</div>
+				<div th:if="${success}"
+					class="alert alert-success alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert"
+						aria-hidden="true">&times;</button>
+					<h5>
+						<i class="icon fas fa-check"></i> Alert!
+					</h5>
+					Success alert preview. This alert is dismissable.
 				</div>
 
-				<div class="form-group row">
-					<label class="col-sm-3 form-label"> Genre </label>
-					<div class="col-sm-7">
-						<select name="genre">
-							<option value="horror">Horror</option>
-							<option value="horror">Comedy</option>
-							<option value="horror">Romance</option>
-							<option value="horror">Action</option>
-						</select>
-					</div>
+
+				<div th:if="${#fields.hasAnyErrors()}"
+					class="alert alert-danger alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <h5><i class="icon fas fa-ban"></i> Alert!</h5>
 				</div>
 
-				<div class="form-group row">
-					<label class="col-sm-3 form-label"> Release Year </label>
-					<div class="col-sm-7">
-						<input type="text" class="form-control" name="year">
-					</div>
-				</div>
-
-				<div class="form-group row">
-					<label class="col-sm-3 form-label"> Remake </label>
-					<div class="col-sm-7">
-						<label class="radio-inline"> <input type="radio"
-							name="remake" value="yes"> Yes
-						</label> <label class="radio-inline"> <input type="radio"
-							name="remake" value="no"> No
-						</label>
-
-					</div>
-				</div>
-
-				<div class="form-group row">
-
-					<div class="col-sm-12 text-center">
-						<button type="submit" class="btn btn-primary">Submit</button>
+					<div class="form-group row">
+						<label class="col-sm-3 form-label"> Movie Name </label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" th:field="*{name}">
+						</div>
 					</div>
 
-				</div>
+					<div class="form-group row">
+						<label class="col-sm-3 form-label"> Genre </label>
+						<div class="col-sm-7">
+							<select name="genre">
+								<option value="horror" th:field="*{genre}">Horror</option>
+								<option value="comedy" th:field="*{genre}">Comedy</option>
+								<option value="romance" th:field="*{genre}">Romance</option>
+								<option value="action" th:field="*{genre}">Action</option>
+							</select>
+						</div>
+					</div>
 
+					<div class="form-group row">
+						<label class="col-sm-3 form-label"> Release Year </label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" th:field="*{year}" required="required">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-3 form-label"> Remake </label>
+						<div class="col-sm-7">
+							<label class="radio-inline"> <input type="radio"
+								name="remake" value="yes"> Yes
+							</label> <label class="radio-inline"> <input type="radio"
+								name="remake" value="no" checked="checked"> No
+							</label>
+
+						</div>
+					</div>
+
+					<div class="form-group row">
+
+						<div class="col-sm-12 text-center">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+
+					</div>
 			</form>
 
 		</div>
@@ -103,41 +122,41 @@ body .container {
 
 			<div class="w-100">
 				<table id="example" class="table table-striped table-bordered">
+
+
+
+					<thead>
+
+						<tr>
+
+							<th>No</th>
+							<th>Name</th>
+							<th>Genre</th>
+							<th>Year</th>
+							<th>Remake</th>
+
+						</tr>
+
+					</thead>
+
+					<tbody>
+
+						<tr>
+							<td>1</td>
+							<td>1</td>
+							<td>1</td>
+							<td>1</td>
+							<td>1</td>
+						</tr>
+
+
+
+					</tbody>
+
+
+
+				</table>
 			</div>
-
-
-			<thead>
-
-				<tr>
-
-					<th>No</th>
-					<th>Name</th>
-					<th>Genre</th>
-					<th>Year</th>
-					<th>Remake</th>
-
-				</tr>
-
-			</thead>
-
-			<tbody>
-
-				<tr>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-					<td>1</td>
-				</tr>
-
-
-
-			</tbody>
-
-
-
-			</table>
-
 		</div>
 
 	</div>
