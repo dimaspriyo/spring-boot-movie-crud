@@ -37,9 +37,10 @@ body .container {
 
 </head>
 <body>
+
 	<div class="container">
 
-		<div class="jumbotron d-flex justify-content-center">
+		<div class="jumbotron d-flex justify-content-center mb-3 pt-4" style="height: 100px">
 			<h2>Spring Boot Movie CRUD</h2>
 		</div>
 
@@ -58,20 +59,38 @@ body .container {
 					<h5>
 						<i class="icon fas fa-check"></i> Alert!
 					</h5>
-					Success alert preview. This alert is dismissable.
+					<span th:text="${success}"></span>
 				</div>
 
+				<div th:if="${failed}"
+					class="alert alert-danger alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert"
+						aria-hidden="true">&times;</button>
+					<h5>
+						<i class="icon fas fa-check"></i> Alert!
+					</h5>
+					<span th:text="${failed}"></span>
+
+				</div>
 
 				<div th:if="${#fields.hasAnyErrors()}"
 					class="alert alert-danger alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                   <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                  	<table th:each="var : ${#fields.allDetailedErrors()}">
+					<tr>
+					<tr>
+					<td th:text="'Field ' + ${var.getFieldName()} + ' ' + ${var.getMessage()}"></td>
+					<tr>
+					</tr>
+					</table>
 				</div>
 
 					<div class="form-group row">
 						<label class="col-sm-3 form-label"> Movie Name </label>
 						<div class="col-sm-7">
 							<input type="text" class="form-control" th:field="*{name}">
+							
 						</div>
 					</div>
 
@@ -134,22 +153,31 @@ body .container {
 							<th>Genre</th>
 							<th>Year</th>
 							<th>Remake</th>
+							<th>Action</th>
 
 						</tr>
 
 					</thead>
 
 					<tbody>
-
-						<tr>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-						</tr>
-
-
+					
+					<tr th:if="${!movies.isEmpty()}" th:each="movie : ${movies}"> 
+					<td th:text="${movie.id}"></td>
+					<td th:text="${movie.name}"></td>
+					<td th:text="${movie.genre}"></td>
+					<td th:text="${movie.year}"></td>
+					<td th:text="${movie.remake}"></td>
+					<td>
+					
+					<a th:href="@{/editForm/{id} (id=${movie.id})}">
+					<button type="button" class="btn btn-primary">Edit</button>
+					</a>
+					
+					<form th:onsubmit="return confirm('Delete this movie permanently?')" th:action="@{/delete/{id} (id=${movie.id})}" method="GET">
+					<input type="submit" class="btn btn-danger" value="delete"></button>
+					</form>
+					</td>
+					</tr:each>
 
 					</tbody>
 
