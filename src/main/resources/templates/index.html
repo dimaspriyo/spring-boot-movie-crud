@@ -173,7 +173,8 @@ body .container {
 					<button type="button" class="btn btn-primary">Edit</button>
 					</a>
 					
-					<form th:onsubmit="return confirm('Delete this movie permanently?')" th:action="@{/delete/{id} (id=${movie.id})}" method="GET">
+					
+					<form th:moviename="${movie.name}" onsubmit="return confirm('Delete ' + this.getAttribute('moviename') + ' movie permanently?')" th:action="@{/delete/{id} (id=${movie.id})}" method="GET">
 					<input type="submit" class="btn btn-danger" value="delete"></button>
 					</form>
 					</td>
