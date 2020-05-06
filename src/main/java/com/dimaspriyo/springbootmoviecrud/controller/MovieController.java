@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.concurrent.SuccessCallback;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +56,7 @@ public class MovieController {
 	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 		
 		 Optional<Movie> movie = movieRepository.findById(id);
-		 if(Optional.empty() == null) {
+		 if(movie.isPresent() == false) {
 			 System.out.println("movie not found");
 			 redirectAttributes.addFlashAttribute("failed", "Movie  Not Found");
 		 }else {
@@ -65,6 +66,33 @@ public class MovieController {
 		 }
 		return "redirect:/";
 		
+		
+	}
+	
+	@GetMapping("/edit/{id}")
+	public String edit(@PathVariable Long id,Model model,RedirectAttributes redirectAttributes){
+		
+		Optional<Movie> movie = movieRepository.findById(id);
+		System.out.println(movie.toString());
+		if (movie.isPresent() == false) {
+			redirectAttributes.addFlashAttribute("failed ", "Failed to delete , movie not found");
+			return "redirect:/";
+		}else {
+			model.addAttribute("movie",movie.get());
+			return "edit";
+		}	
+	}
+	
+	@PostMapping("/update")
+	public String update( @Valid Movie movie, BindingResult result, RedirectAttributes redirectAttributes) {
+		
+		if(result.hasErrors()) {
+			return "edit";
+		}else {
+			movieRepository.save(movie);
+			redirectAttributes.addFlashAttribute("success", "Movie Updated" );
+			return "redirect:/";
+		}
 		
 	}
 }
